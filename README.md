@@ -1,2 +1,2 @@
-# EXAMPLE-sharing-analyses
-teaching demo; can be deleted later
+# TEACHING DEMO
+can be deleted later
