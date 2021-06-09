@@ -1,0 +1,29 @@
+# Today's outline
+
+Alright everyone, welcome back! To recap: 
+
+## Before the break: 
+
+    - created & knitted our first R Markdown file(!) 
+    - this allows us to embed any outputs that we generate (e.g. figs, tables) into a document along with other text and formatting
+    - Ways R Markdown is useful: (a) sharing reports with clients/collabs, (b) building interactive dashboards, (c) documenting analyses 
+    
+## Now:
+
+    - let's organize! -> edit the YAML metadata header
+    - publish as a webpage using GitHub pages
+    - improving accessibility 
+
+
+
+Alright everyone, welcome back! To recap: 
+1.	We created our first R Markdown file, which allows us to not only write and execute code (like we do in a normal R script), but it also allows us to embed any outputs in a document with other text –we can use these to /build reports, etc. so that we can share our work with others in a highly reproducible way.
+2.	In that R Markdown file, we created our first html widgets using the leaflet and DT packages – we talked about how html widgets are built on top of JavaScript libraries but allow us to use R syntax to build interactive graphics and tables.
+3.	Some of the ways you all thought RMarkdown could be useful included: (1) writing reports to share with clients, building an interactive dashboard, and documenting analyses (among other things)
+
+In these last few minutes of class, we’re going to learn how to customize our RMarkdown files a little more, to make them easier to navigate and generally more visually pleasing. We’ll do this primarily by modifying the YAML metadata header, then learn how we can quickly publish our knitted HTML files as a webpage using GitHub pages. 
+
+
+
+
+Which provides X, Y , Z for our collaborators or clients. But we’ve just gotten started on our data analyses and we want to be able to make updates/improvements and share those with our clients. We can certainly send them a knitted version of our .Rmd file, but when we make changes, we’ll have to re-send a new version – tends to get lost in email/slack and can generally be a bit cumbersome

@@ -1,0 +1,132 @@
+---
+title: "A *very* important report on global UFO sightings and abductions"
+subtitle: "*But really just 7(?) simple ways to make your work easier to navigate and share*" !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+author: "Sam Csik"
+date: "6/8/2021"
+output: 
+  html_document:
+    toc: true !!!!!!!!!!!!!!!!!!!!!!!!!!!! 1
+    toc_float: true !!!!!!!!!!!!!!!!!!!!!!!!!!!! 2
+    code_folding: hide !!!!!!!!!!!!!!!!!!!!!!!!!!!! 1
+    code_download: true !!!!!!!!!!!!!!!!!!!!!!!!!!!! 2 
+    theme: spacelab !!!!!!!!!!!!!!!!!!!!!!!!!!!! 1
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+Here we explore the most important topic, alien abduction accounts. 
+
+**Dataset:** UFO Sightings, Reports of unidentified flying object reports in the last century *(downloadable from [kaggle](https://www.kaggle.com/NUFORC/ufo-sightings))*
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE}
+###########################
+# load packages
+###########################
+
+# for cleaning and wrangling
+library(tidyverse)
+library(janitor)
+library(lubridate) 
+
+# for map making and general spatial work
+library(leaflet)
+
+# for making tables
+library(DT)
+
+###########################
+# load data
+###########################
+
+UFO_data_all <- read_csv(here::here("data", "UFO_complete.csv"))
+
+###########################
+# bunch of parsing failures from columns that are shifted; we're going to just filter those out bc they don't have appropriate lat/long data
+###########################
+
+# see parsing failures here
+UFO_parsing_failures <- UFO_data_all %>% 
+  filter(is.na(city))
+
+# remove those from the dataset
+UFO_data_cleaned <- UFO_data_all %>% 
+ filter(!is.na(city))
+```
+
+## Alien Abductions {.tabset} !!!!!!!!!!!!!!!!!!!!!1 3
+
+### All accounts of alien abductions
+```{r}
+##############################
+# clean up UFO_data to display in an interactive table
+##############################
+
+Table1_abduction_data <- UFO_data_cleaned %>% 
+  clean_names() %>% # clean up those col headers using the janitor package
+  filter(str_detect(comments, "(?i)abduction")) %>%  # filter for any comments that mention 'abduction'
+  select(datetime, date_posted, country, state, city, duration_seconds, shape, comments) 
+
+##############################
+# generate an interactive table (using the `DT` package) 
+##############################
+
+Table1 <- datatable(Table1_abduction_data, # your data frame
+                    class = 'cell-border stripe', 
+                    colnames = c("Date/Time (of encounter)", "Date Reported", # rename column names
+                                 "Country", "State", "City", "Duration of Encounter (sec)", 
+                                 "Shape of UFO", "Comments"),
+                    caption = htmltools::tags$caption( # add a caption
+                      style = 'caption-side: top; text-align: left;', # set location/alignment of caption text
+                      htmltools::em('Table 1: Global accounts of alien abductions from 1910-2013.')), # write caption
+                    filter = 'top', 
+                    options = list(pageLength = 5, autoWidth = TRUE)) # set number of viewable rows
+
+##############################
+# display table in knitted doc
+##############################
+
+Table1
+```
+
+
+### Map of alien abductions
+```{r, fig.alt = "An interactive map, which shows the locations of all UFO sightings, where the observer mentions the word 'abduction'. THe majority of the accounts are in North America"}
+##############################
+# wrangle data (get latitude, longitude, and all comments mentioning the word "abduction")
+##############################
+
+leaflet_abduction_data <- UFO_data_cleaned %>% 
+  filter(str_detect(comments, "(?i)abduction")) %>% # filter for any comments mentioning 'abduction'
+  mutate(latitude = as.numeric(latitude), # leaflet requires lat/long to be numeric values
+         longitude = as.numeric(longitude))
+
+###########################
+# make a custom icon 
+###########################
+
+UFO_icon <- makeIcon(iconUrl = "media/ufo.png", # file path to saved .png (or URL)
+                     iconWidth = 35, iconHeight = 45) # adjust size
+
+###########################
+# make interactive map (using the `leaflet` package)
+###########################
+
+abduction_map <- leaflet(leaflet_abduction_data) %>% 
+  addProviderTiles(providers$CartoDB.Positron) %>% # add basemap and choose style
+  addMarkers(lng = ~longitude, lat = ~latitude, icon = UFO_icon, popup = ~ comments) %>% # add UFO_icon as data points and show comments in the popup
+  addMiniMap(tiles = providers$CartoDB.Positron, # add a mini map to show zoom coverage
+             toggleDisplay = TRUE) # allows user to collapse mini map
+
+###########################
+# display map in knitted doc
+###########################
+
+abduction_map
+```
+
