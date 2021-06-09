@@ -1,5 +1,6 @@
 ---
 title: "A *very* important report on global UFO sightings and abductions"
+subtitle: "But really just 7(?) simple ways to make your work easier to navigate and share"
 author: "Sam Csik"
 date: "6/8/2021"
 output: html_document
@@ -27,6 +28,8 @@ library(leaflet)
 # for making tables
 library(DT)
 
+library(palmerpenguins)
+
 ###########################
 # load data
 ###########################
@@ -53,34 +56,37 @@ UFO_data_cleaned <- UFO_data_all %>%
 ##############################
 # wrangle data (get latitude, longitude, and all comments mentioning the word "abduction")
 ##############################
+data <- penguins
+ggplot(data, aes(x = "bill_length_mm", y = "bill_depth_mm")) +
+  geom_point()
 
-leaflet_abduction_data <- UFO_data_cleaned %>% 
-  filter(str_detect(comments, "(?i)abduction")) %>% # filter for any comments mentioning 'abduction'
-  mutate(latitude = as.numeric(latitude), # leaflet requires lat/long to be numeric values
-         longitude = as.numeric(longitude))
-
-###########################
-# make a custom icon 
-###########################
-
-UFO_icon <- makeIcon(iconUrl = "media/ufo.png", # file path to saved .png (or URL)
-                     iconWidth = 35, iconHeight = 45) # adjust size
-
-###########################
-# make interactive map (using the `leaflet` package)
-###########################
-
-abduction_map <- leaflet(leaflet_abduction_data) %>% 
-  addProviderTiles(providers$CartoDB.Positron) %>% # add basemap and choose style
-  addMarkers(lng = ~longitude, lat = ~latitude, icon = UFO_icon, popup = ~ comments) %>% # add UFO_icon as data points and show comments in the popup
-  addMiniMap(tiles = providers$CartoDB.Positron, # add a mini map to show zoom coverage
-             toggleDisplay = TRUE) # allows user to collapse mini map
-
-###########################
-# display map in knitted doc
-###########################
-
-abduction_map
+# leaflet_abduction_data <- UFO_data_cleaned %>% 
+#   filter(str_detect(comments, "(?i)abduction")) %>% # filter for any comments mentioning 'abduction'
+#   mutate(latitude = as.numeric(latitude), # leaflet requires lat/long to be numeric values
+#          longitude = as.numeric(longitude))
+# 
+# ###########################
+# # make a custom icon 
+# ###########################
+# 
+# UFO_icon <- makeIcon(iconUrl = "media/ufo.png", # file path to saved .png (or URL)
+#                      iconWidth = 35, iconHeight = 45) # adjust size
+# 
+# ###########################
+# # make interactive map (using the `leaflet` package)
+# ###########################
+# 
+# abduction_map <- leaflet(leaflet_abduction_data) %>% 
+#   addProviderTiles(providers$CartoDB.Positron) %>% # add basemap and choose style
+#   addMarkers(lng = ~longitude, lat = ~latitude, icon = UFO_icon, popup = ~ comments) %>% # add UFO_icon as data points and show comments in the popup
+#   addMiniMap(tiles = providers$CartoDB.Positron, # add a mini map to show zoom coverage
+#              toggleDisplay = TRUE) # allows user to collapse mini map
+# 
+# ###########################
+# # display map in knitted doc
+# ###########################
+# 
+# abduction_map
 ```
 
 ### All accounts of alien abductions
@@ -115,3 +121,9 @@ Table1 <- datatable(Table1_abduction_data, # your data frame
 
 Table1
 ```
+
+
+```{r}
+
+```
+
