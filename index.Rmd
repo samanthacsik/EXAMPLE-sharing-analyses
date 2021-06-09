@@ -27,9 +27,6 @@ library(leaflet)
 # for making tables
 library(DT)
 
-# for reproducibility
-library(here)
-
 ###########################
 # load data
 ###########################
@@ -50,7 +47,9 @@ UFO_data_cleaned <- UFO_data_all %>%
 ```
 
 ## Alien Abductions
-```{r}
+
+### Map of alien abductions
+```{r, fig.alt = "An interactive map, which shows the locations of all UFO sightings, where the observer mentions the word 'abduction'. THe majority of the accounts are in North America"}
 ##############################
 # wrangle data (get latitude, longitude, and all comments mentioning the word "abduction")
 ##############################
@@ -84,3 +83,35 @@ abduction_map <- leaflet(leaflet_abduction_data) %>%
 abduction_map
 ```
 
+### All accounts of alien abductions
+```{r}
+##############################
+# clean up UFO_data to display in an interactive table
+##############################
+
+Table1_abduction_data <- UFO_data_cleaned %>% 
+  clean_names() %>% # clean up those col headers using the janitor package
+  filter(str_detect(comments, "(?i)abduction")) %>%  # filter for any comments that mention 'abduction'
+  select(datetime, date_posted, country, state, city, duration_seconds, shape, comments) 
+
+##############################
+# generate an interactive table (using the `DT` package) 
+##############################
+
+Table1 <- datatable(Table1_abduction_data, # your data frame
+                    class = 'cell-border stripe', 
+                    colnames = c("Date/Time (of encounter)", "Date Reported", # rename column names
+                                 "Country", "State", "City", "Duration of Encounter (sec)", 
+                                 "Shape of UFO", "Comments"),
+                    caption = htmltools::tags$caption( # add a caption
+                      style = 'caption-side: top; text-align: left;', # set location/alignment of caption text
+                      htmltools::em('Table 1: Global accounts of alien abductions from 1910-2013.')), # write caption
+                    filter = 'top', 
+                    options = list(pageLength = 5, autoWidth = TRUE)) # set number of viewable rows
+
+##############################
+# display table in knitted doc
+##############################
+
+Table1
+```
