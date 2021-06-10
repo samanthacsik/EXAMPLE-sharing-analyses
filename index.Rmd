@@ -6,8 +6,8 @@ output:
   html_document:
     toc: true
     code_folding: hide
-    theme: yeti 
     toc_float: true
+    theme: yeti
 editor_options: 
   chunk_output_type: console
 ---
@@ -15,8 +15,6 @@ editor_options:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, comment = "")
 ```
-
-I'M MAKING EDITS NOW!
 
 ## Agenda
 
