@@ -1,29 +1,89 @@
 # Today's outline
 
-Alright everyone, welcome back! To recap: 
+Alright everyone, welcome back! I just want to quick recap what we've worked on so far and provide a road map for these last few minutes of class: 
 
-## Before the break: 
+-----------------------------
+
+Before the break, we:
 
     - created & knitted our first R Markdown file(!) 
     - this allows us to embed any outputs that we generate (e.g. figs, tables) into a document along with other text and formatting
-    - Ways R Markdown is useful: (a) sharing reports with clients/collabs, (b) building interactive dashboards, (c) documenting analyses 
+    - After some open discussion, we decided that these knitted Rmd files would be great for (a) sharing reports with clients/collabs, (b) building interactive dashboards, (c) documenting analyses 
     
-## Now:
+So while what we've created is really awesome in it's own right, there are a few really simple ways we can tweak our knitted document so that it's more organized and accessible for those who may be referencing it.
+
+-----------------------------
+
+We’ll do this primarily by modifying the YAML metadata header (along with a few other tweaks), then learn how we can quickly publish our knitted HTML files as a webpage using GitHub pages (we'll also talk about the benefits of doing so). 
 
     - let's organize! -> edit the YAML metadata header
-    - publish as a webpage using GitHub pages
+        - add a TOC
+        - collapsible code chunks
+        - downloadable source code
+        - change the default theme
+        - organize our content in tabs*
     - improving accessibility 
+    - publish as a webpage using GitHub pages
+   
+-----------------------------
+
+Does anyone have questions before we get started?
+Great.
+
+-----------------------------
+
+Okay, so first thing I see when I look at this document, is "wow, I love that I can see all the code that generated these outputs, but it's a little distracting when I'm trying to focus on the message of this report". I'm also thinking that it would be great to have a table of contents (of sorts) to make it easier to navigate among different sections (now this is a pretty short "report" at the moment, but you can imagine that if you had a lot more content, you'd be scrolling forever to get to where you wanted to be, a linked TOC would be great) Super easy to fix if we just head back up to our YAML metadata header.  
+
+We noted that RMarkdown auto-filled the title, author, and date information when we first generated this Rmd file, but can add additional fields here that will apply functions and formatting across our entire document. So let's do that!
+
+-----------------------------
+
+First, we can add a table of contents by setting the `toc` option to `true`. Next, we can actually create buttons that will collapse/expand code chunks as needed (this is my personal favorite feature). We do this by setting the `code_folding` option to `hide` if we want them to be collapsed as the default (`show` = expanded as default). And just because I'm feeling fancy, let's also change the default theme -- there are some built in ones, including `yeti` because it sounds thematic since we're working with penguin data. There are also other packages with pre-curated themes (e.g. prettydoc, rmdformat) https://www.datadreaming.org/post/r-markdown-theme-gallery/ 
+
+-----------------------------
+
+Okay, let's knit this to see what our changes look like. Sweet, so you'll notice now that we have a TOC at the very top -- if you click on any of the sections, it'll scroll you to the start of that section. You'll also notice our code is gone, but these little 'Code' buttons appear whereever there used to be a code chunk. Clicking on these will expand/collapse as needed. You can also expand or collapse all the document's code chunks here at the top.
+
+-----------------------------
+
+It's looking a lot more organized already! Let's fiddle with things a bit more. I personally prefer a floating TOC so that you can click on sections even if you're scrolled past the top of the page. We can update that by setting the `toc_float` option to `true`.
+
+-----------------------------
+
+One last visual update I'd like to make is to organize our content (table & figure) in tabs. I think this can be useful, particularly when you have content or analyses that are related and can be nested under a common heading -- for example, we plotted penguin bill length ~ body mass and then also generated a summary stats table based on those same values. Tabs are super easy to create adding the {.tabset} class attribute to the appropriate section header. 
+
+So to do this, I'm going to paste this {.tabset} attribute after the text of the section header that is ONE LEVEL HIGHER than the headers I intend to convert to tabs. Which will create tabs out of the following level-3 headers. We can add additional attributes for format our tabs a bit more as well, including {.tabset-fade .tabset-pills}. So if we knit this now, you'll see our content is now organized in these parallel tabs rather than having to scroll back and forth!
+
+-----------------------------
+
+I think we're almost ready to turn our knitted document into a webpage, but first I want to show you one last think I'm juuuust beginning to learn more about now that's super easy to implement here. Show of hands -- has anyone here heard of 'alt text'? Does anyone know the benefit of including alt text in our webpages?
+
+So alt text helps people who use assistive technologies, like screen readers, understand images. If you're building an html webpage, you would add an 'alt' attribute to an image that clearly and concisely describes what that image portrays. This text isn't necessarily rendered on the page like a figure caption often is, but sits just below the surface where assisitive technologies can find and read them.
+
+You can check to see if an image has alt text by Inspecting the html file of a webpage. For example https://www.a11yproject.com/ (also check out this resource!). Automated detection technology, such as machine learning, is being used to auto-generate alt text, but it's still new and unsophisticated and often wrong, so it's really up to us as content creators to add that text ourselves in order to make our work widely accessible.
+
+Thanksfully, it's incredibly easy with the newest knitr release -- we can just add our text to our code chunks! You are already familiar with adding captions using `fig.cap` -- if this is included by itself, this will become alt text. However, we can also add `fig.alt` with a more detailed description that what we typically find in a fig. caption. 
+
+Okay let's knit and check that our alt text appears. Great!
+
+-----------------------------
+
+Okay FINALLY last step is to turn this into a webpage! The first step is to rename our html file (and Rmd file as 'index.html') -- The index page is the URL or local file that automatically loads when a web browser starts and when the browser's 'home' button is pressed. The term is also used to refer to the front page, web server directory index, or main web page of a website of a group, company, organization, or individual. THIS WILL NOT WORK IF IT'S NOT NAMED CORRECTLY. 
+
+Let's push any changes, including the renamed files to github. You'll want to push both the Rmd and the knitted html file. 
+
+If we refresh, we see that those made their way to github. Next we're going to go to settings, then click on the Pages option on the left hand side. Here, you'll specify where you index.html file lives -- First it lives on our 'main' branch (if you haven't created any branches, you should already be on 'main'). It also is located in our root directory, but we could also have saved it to a /docs subdirectory. Once you save, a url will appear! If you click -- oops! 404 -- it's important to note that it can sometimes take up to 15 min for this link to resolve so be patient. We can try refreshing -- there it is! Now you can build some really incredible websites using GitHub pages, but I think the benefits of using it for this purpose are plentiful --
+
+1) it takes hardly any time
+2) if you make changes to your analyses (get more data, incorporate feedback, etc), all you need to do is re-knit and re-push to github. The link will remain the same. So now you don't need to re-send .html files to anyone to get that new content into thier hands!
 
 
 
-Alright everyone, welcome back! To recap: 
-1.	We created our first R Markdown file, which allows us to not only write and execute code (like we do in a normal R script), but it also allows us to embed any outputs in a document with other text –we can use these to /build reports, etc. so that we can share our work with others in a highly reproducible way.
-2.	In that R Markdown file, we created our first html widgets using the leaflet and DT packages – we talked about how html widgets are built on top of JavaScript libraries but allow us to use R syntax to build interactive graphics and tables.
-3.	Some of the ways you all thought RMarkdown could be useful included: (1) writing reports to share with clients, building an interactive dashboard, and documenting analyses (among other things)
-
-In these last few minutes of class, we’re going to learn how to customize our RMarkdown files a little more, to make them easier to navigate and generally more visually pleasing. We’ll do this primarily by modifying the YAML metadata header, then learn how we can quickly publish our knitted HTML files as a webpage using GitHub pages. 
 
 
 
+
+-----------------------------
 
 Which provides X, Y , Z for our collaborators or clients. But we’ve just gotten started on our data analyses and we want to be able to make updates/improvements and share those with our clients. We can certainly send them a knitted version of our .Rmd file, but when we make changes, we’ll have to re-send a new version – tends to get lost in email/slack and can generally be a bit cumbersome
+

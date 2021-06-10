@@ -1,0 +1,104 @@
+---
+title: "My first R Markdown!"
+author: "Sam Csik"
+date: "6/8/2021"
+output: 
+  html_document:
+    toc: true # ---------------------- 1 ----------------------
+    code_folding: hide # ---------------------- 1 ----------------------
+    theme: yeti # ---------------------- 1 ----------------------
+    toc_float: true # ---------------------- 2 ----------------------
+    code_download: true # ---------------------- 2 ----------------------
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = "")
+```
+
+## Agenda
+
+  1. create/knit an R Markdown file
+  2. embed outputs into our knitted doc
+  3. discuss ways R Markdown may be useful  
+  ----------------------------------------
+  4. organize! --> YAML metadata header
+      - table of contents
+      - collapsible code chunks
+      - theme
+      - tabs*
+  5. improve accessibility
+      - alt text
+  6. publish as a website --> GitHub Pages
+
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE} 
+library(palmerpenguins) 
+library(tidyverse)
+library(gt)
+```
+
+## Introduction
+
+Here, I'm providing some background information about penguins, and why it's important for us to take different types of morphological measurements. Here are the methods I used. Etc. 
+
+I can also hyperlink to other resources. For example, see a more complete description of the `palmerpenguins` package and data [here](https://allisonhorst.github.io/palmerpenguins/index.html).
+
+## Penguin sizes {.tabset .tabset-fade .tabset-pills} 
+
+### Bill length ~ body mass of penguins
+```{r, warning = FALSE, fig.cap = "**Fig. 1:** Penguin bill length ~ body mass for Adelie, Chinstrap, & Gentoo Penguins", fig.alt = "A scatterplot of body mass (in grams) by bill length (in millimeters) for Adelie, Chinstrap, and Gentoo penguins, where we show that penguins with greater body mass have larger bills."}
+ggplot(data = penguins, aes(x = body_mass_g, y = bill_length_mm, color = species)) +
+  geom_point(aes(shape = species), alpha = 0.8) +
+  scale_color_manual(values = c("darkorange","purple","darkcyan")) +
+  labs(x = "Body mass (g)", y = "Bill length (mm)") +
+  theme_minimal()
+```
+
+### Body size summary statistics
+```{r, warning = FALSE}
+# summarize df
+penguin_summary <- penguins %>% 
+  drop_na() %>% 
+  group_by(species) %>% 
+  summarize(
+    mean_body_mass = round(mean(body_mass_g, 4)), 
+    sd_body_mass = round(sd(body_mass_g, 4)),
+    mean_bill_length = round(mean(bill_length_mm, 4)),
+    sd_bill_length = round(sd(bill_length_mm, 4))
+  )
+
+# create table with DT
+table1 <- penguin_summary %>% 
+  gt() %>% 
+  tab_header(title = "Mean body mass and bill length measurements (±SD) for Adelie, Chinstrap, & Gentoo penguins") %>% 
+  cols_label(species = "Species",
+             mean_body_mass = "Mean body mass (g)",
+             sd_body_mass = "SD body mass (g)",
+             mean_bill_length = "Mean bill length (mm)",
+             sd_bill_length = "SD bill length (mm)") %>% 
+  cols_align("center") %>% 
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_title(groups = "title")
+  ) %>% 
+  tab_style(
+    style = cell_text(color = "darkorange"),
+    locations = cells_body(
+      rows = species == "Adelie")
+  ) %>% 
+    tab_style(
+    style = cell_text(color = "purple"),
+    locations = cells_body(
+      rows = species == "Chinstrap")
+  ) %>%
+    tab_style(
+    style = cell_text(color = "darkcyan"),
+    locations = cells_body(
+      rows = species == "Gentoo")
+  )
+  
+table1
+```
+
