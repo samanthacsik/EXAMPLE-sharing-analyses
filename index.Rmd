@@ -16,6 +16,8 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE, comment = "")
 ```
 
+I'M MAKING EDITS NOW!
+
 ## Agenda
 
   1. create/knit an R Markdown file
