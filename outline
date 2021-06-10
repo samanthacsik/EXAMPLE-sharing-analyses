@@ -10,7 +10,7 @@ Before the break, we:
     - this allows us to embed any outputs that we generate (e.g. figs, tables) into a document along with other text and formatting
     - After some open discussion, we decided that these knitted Rmd files would be great for (a) sharing reports with clients/collabs, (b) building interactive dashboards, (c) documenting analyses 
     
-So while what we've created is really awesome in it's own right, there are a few really simple ways we can tweak our knitted document so that it's more organized and accessible for those who may be referencing it.
+In these last few minutes here, I'm going to show you a few really simple ways we can tweak our knitted document so that it's more organized and accessible for those who may be referencing it.
 
 -----------------------------
 
@@ -32,7 +32,7 @@ Great.
 
 -----------------------------
 
-Okay, so first thing I see when I look at this document, is "wow, I love that I can see all the code that generated these outputs, but it's a little distracting when I'm trying to focus on the message of this report". I'm also thinking that it would be great to have a table of contents (of sorts) to make it easier to navigate among different sections (now this is a pretty short "report" at the moment, but you can imagine that if you had a lot more content, you'd be scrolling forever to get to where you wanted to be, a linked TOC would be great) Super easy to fix if we just head back up to our YAML metadata header.  
+Okay, so first thing I see when I look at this document, is "wow, I love that I can see all the code that generated these outputs, but it's a little distracting when I'm trying to focus on the message of this report". I'm also thinking that it would be great to have a table of contents (of sorts) to make it easier to navigate among different sections.
 
 We noted that RMarkdown auto-filled the title, author, and date information when we first generated this Rmd file, but can add additional fields here that will apply functions and formatting across our entire document. So let's do that!
 

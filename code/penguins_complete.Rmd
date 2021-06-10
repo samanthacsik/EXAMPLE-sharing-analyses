@@ -8,7 +8,6 @@ output:
     code_folding: hide # ---------------------- 1 ----------------------
     theme: yeti # ---------------------- 1 ----------------------
     toc_float: true # ---------------------- 2 ----------------------
-    code_download: true # ---------------------- 2 ----------------------
 editor_options: 
   chunk_output_type: console
 ---
@@ -37,6 +36,7 @@ knitr::opts_chunk$set(echo = TRUE, comment = "")
 library(palmerpenguins) 
 library(tidyverse)
 library(gt)
+library(DT)
 ```
 
 ## Introduction
@@ -45,9 +45,33 @@ Here, I'm providing some background information about penguins, and why it's imp
 
 I can also hyperlink to other resources. For example, see a more complete description of the `palmerpenguins` package and data [here](https://allisonhorst.github.io/palmerpenguins/index.html).
 
+## Explore the raw data
+
+```{r, warning = FALSE, message = FALSE}
+##############################
+# generate an interactive table (using the `DT` package) 
+##############################
+
+table1 <- datatable(penguins, 
+                    class = 'cell-border stripe', 
+                    colnames = c("Species", "Island", "Bill length (mm)",
+                                 "Bill depth (mm)", "Flipper length (mm)",
+                                 "Body mass (g)", "Sex", "Year"),
+                    caption = htmltools::tags$caption( 
+                      style = 'caption-side: top; text-align: left;', 
+                      htmltools::em('Table 1: Morphological data for male and female Adelie, Chinstrap, & Gentoo penguins across three islands in the Palmer Archipelago, Antarctica.')),
+                    filter = 'top', 
+                    options = list(pageLength = 5, autoWidth = TRUE)) 
+##############################
+# display table in knitted doc
+##############################
+
+table1
+```
+
 ## Penguin sizes {.tabset .tabset-fade .tabset-pills} 
 
-### Bill length ~ body mass of penguins
+### Penguin bill length ~ body mass
 ```{r, warning = FALSE, fig.cap = "**Fig. 1:** Penguin bill length ~ body mass for Adelie, Chinstrap, & Gentoo Penguins", fig.alt = "A scatterplot of body mass (in grams) by bill length (in millimeters) for Adelie, Chinstrap, and Gentoo penguins, where we show that penguins with greater body mass have larger bills."}
 ggplot(data = penguins, aes(x = body_mass_g, y = bill_length_mm, color = species)) +
   geom_point(aes(shape = species), alpha = 0.8) +
@@ -56,20 +80,26 @@ ggplot(data = penguins, aes(x = body_mass_g, y = bill_length_mm, color = species
   theme_minimal()
 ```
 
-### Body size summary statistics
+### Penguin body size summary statistics
 ```{r, warning = FALSE}
+##############################
 # summarize df
+##############################
+
 penguin_summary <- penguins %>% 
   drop_na() %>% 
   group_by(species) %>% 
   summarize(
-    mean_body_mass = round(mean(body_mass_g, 4)), 
-    sd_body_mass = round(sd(body_mass_g, 4)),
-    mean_bill_length = round(mean(bill_length_mm, 4)),
-    sd_bill_length = round(sd(bill_length_mm, 4))
+    mean_body_mass = round(mean(body_mass_g), 2), 
+    sd_body_mass = round(sd(body_mass_g), 2),
+    mean_bill_length = round(mean(bill_length_mm), 2),
+    sd_bill_length = round(sd(bill_length_mm), 2)
   )
 
+##############################
 # create table with DT
+##############################
+
 table1 <- penguin_summary %>% 
   gt() %>% 
   tab_header(title = "Mean body mass and bill length measurements (±SD) for Adelie, Chinstrap, & Gentoo penguins") %>% 
@@ -98,6 +128,10 @@ table1 <- penguin_summary %>%
     locations = cells_body(
       rows = species == "Gentoo")
   )
+
+##############################
+# display table in knitted doc
+##############################
   
 table1
 ```

@@ -2,7 +2,12 @@
 title: "My first R Markdown!"
 author: "Sam Csik"
 date: "6/8/2021"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    code_folding: hide
+    theme: yeti 
+    toc_float: true
 editor_options: 
   chunk_output_type: console
 ---
@@ -21,7 +26,6 @@ knitr::opts_chunk$set(echo = TRUE, comment = "")
       - table of contents
       - collapsible code chunks
       - theme
-      - downloadable Rmd
       - tabs*
   5. improve accessibility
       - alt text
@@ -31,8 +35,8 @@ knitr::opts_chunk$set(echo = TRUE, comment = "")
 ```{r, message = FALSE, warning = FALSE, echo = FALSE} 
 library(palmerpenguins) 
 library(tidyverse)
-library(gt)
 library(DT)
+library(gt)
 ```
 
 ## Introduction
@@ -48,7 +52,7 @@ I can also hyperlink to other resources. For example, see a more complete descri
 # generate an interactive table (using the `DT` package) 
 ##############################
 
-table1 <- datatable(penguins, #
+table1 <- datatable(penguins, 
                     class = 'cell-border stripe', 
                     colnames = c("Species", "Island", "Bill length (mm)",
                                  "Bill depth (mm)", "Flipper length (mm)",
@@ -66,10 +70,10 @@ table1 <- datatable(penguins, #
 table1
 ```
 
-## Penguin sizes 
+## Penguin sizes {.tabset .tabset-fade .tabset-pills}
 
-### Penguin bill length ~ body mass
-```{r, warning = FALSE, fig.cap = "**Fig. 1:** Penguin bill length ~ body mass for Adelie, Chinstrap, & Gentoo Penguins"}
+### Bill length ~ body mass
+```{r, warning = FALSE, fig.cap = "**Fig. 1:** Penguin bill length ~ body mass for Adelie, Chinstrap, & Gentoo Penguins", fig.alt = "A scatterplot of body mass (in grams) by bill length (in millimeters) for Adelie, Chinstrap, and Gentoo penguins, where we show that penguins with greater body mass tend to have larger bills."}
 ggplot(data = penguins, aes(x = body_mass_g, y = bill_length_mm, color = species)) +
   geom_point(aes(shape = species), alpha = 0.8) +
   scale_color_manual(values = c("darkorange","purple","darkcyan")) +
@@ -77,7 +81,7 @@ ggplot(data = penguins, aes(x = body_mass_g, y = bill_length_mm, color = species
   theme_minimal()
 ```
 
-### Penguin body size summary statistics
+### Body size summary statistics
 ```{r, warning = FALSE}
 ##############################
 # summarize df
@@ -97,7 +101,7 @@ penguin_summary <- penguins %>%
 # create table with DT
 ##############################
 
-table1 <- penguin_summary %>% 
+table2 <- penguin_summary %>% 
   gt() %>% 
   tab_header(title = "Mean body mass and bill length measurements (±SD) for Adelie, Chinstrap, & Gentoo penguins") %>% 
   cols_label(species = "Species",
@@ -130,6 +134,6 @@ table1 <- penguin_summary %>%
 # display table in knitted doc
 ##############################
 
-table1
+table2
 ```
 
