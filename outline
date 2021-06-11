@@ -12,19 +12,28 @@ Before the break, we:
     
 In these last few minutes here, I'm going to show you a few really simple ways we can tweak our knitted document so that it's more organized and accessible for those who may be referencing it.
 
------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Alright everyone, welcome back! Now that we've created our first knitted R Markdown file, we're going to spend these last few minutes of class organizing our content a bit more and improving the accessibility of our work for those who may be referencing it.
 
 We’ll do this primarily by modifying the YAML metadata header (along with a few other tweaks), then learn how we can quickly publish our knitted HTML files as a webpage using GitHub pages (we'll also talk about the benefits of doing so). 
 
-    - let's organize! -> edit the YAML metadata header
-        - add a TOC
-        - collapsible code chunks
-        - downloadable source code
-        - change the default theme
-        - organize our content in tabs*
-    - improving accessibility 
-    - publish as a webpage using GitHub pages
-   
+-----------------------------
 -----------------------------
 
 Does anyone have questions before we get started?
@@ -76,14 +85,4 @@ If we refresh, we see that those made their way to github. Next we're going to g
 
 1) it takes hardly any time
 2) if you make changes to your analyses (get more data, incorporate feedback, etc), all you need to do is re-knit and re-push to github. The link will remain the same. So now you don't need to re-send .html files to anyone to get that new content into thier hands!
-
-
-
-
-
-
-
------------------------------
-
-Which provides X, Y , Z for our collaborators or clients. But we’ve just gotten started on our data analyses and we want to be able to make updates/improvements and share those with our clients. We can certainly send them a knitted version of our .Rmd file, but when we make changes, we’ll have to re-send a new version – tends to get lost in email/slack and can generally be a bit cumbersome
 

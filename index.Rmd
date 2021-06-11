@@ -1,7 +1,7 @@
 ---
 title: "My first R Markdown!"
 author: "Sam Csik"
-date: "6/8/2021"
+date: "6/11/2021"
 output: 
   html_document:
     toc: true
@@ -72,7 +72,7 @@ table1
 ## Penguin sizes {.tabset .tabset-fade .tabset-pills}
 
 ### Bill length ~ body mass
-```{r, warning = FALSE, fig.cap = "**Fig. 1:** Penguin bill length ~ body mass for Adelie, Chinstrap, & Gentoo Penguins", fig.alt = "A scatterplot of body mass (in grams) by bill length (in millimeters) for Adelie, Chinstrap, and Gentoo penguins, where we show that penguins with greater body mass tend to have larger bills."}
+```{r, warning = FALSE, fig.cap = "**Fig. 1:** Penguin bill length ~ body mass for Adelie, Chinstrap, & Gentoo Penguins", fig.alt = "A scatterplot of body mass (in grams) by bill length (in millimeters) for Adelie, Chinstrap, and Gentoo penguins, which shows that penguins with greater body mass tend to have larger bills."}
 ggplot(data = penguins, aes(x = body_mass_g, y = bill_length_mm, color = species)) +
   geom_point(aes(shape = species), alpha = 0.8) +
   scale_color_manual(values = c("darkorange","purple","darkcyan")) +
