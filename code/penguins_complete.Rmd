@@ -1,7 +1,7 @@
 ---
 title: "My first R Markdown!"
 author: "Sam Csik"
-date: "6/8/2021"
+date: "6/11/2021"
 output: 
   html_document:
     toc: true # ---------------------- 1 ----------------------
